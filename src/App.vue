@@ -48,7 +48,8 @@ export default {
     fab: false,
     scanning: false,
     adding: false,
-    products: []
+    products: [],
+    maxId: 0,
   }),
 
   computed: {
@@ -73,6 +74,9 @@ export default {
 
     onSaveProduct: function(product) {
       this.adding = false;
+      if (!product.id) {
+        product.id = this.nextId++;
+      }
       this.products.push(product);
       localStorage['wtfridge_products'] = JSON.stringify(this.products);
     },
@@ -84,9 +88,11 @@ export default {
       return;
     }
     this.products = JSON.parse(jsonProducts)
-      .map((p) => Object.assign(p, {
+      .map((p, i) => Object.assign(p, {
+        id: p.id || i,
         expireDate: new Date(p.expireDate)
       }));
+    this.nextId = this.products.length;
   }
 };
 </script>
