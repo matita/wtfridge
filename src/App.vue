@@ -48,18 +48,7 @@ export default {
     fab: false,
     scanning: false,
     adding: false,
-    products: [
-      {
-        name: 'Latte',
-        expireDate: new Date(2020, 11, 16)
-      }, {
-        name: 'Uova',
-        expireDate: new Date(2020, 10, 18)
-      }, {
-        name: 'Salame',
-        expireDate: new Date(2020, 10, 10)
-      }
-    ]
+    products: []
   }),
 
   computed: {
@@ -85,8 +74,20 @@ export default {
     onSaveProduct: function(product) {
       this.adding = false;
       this.products.push(product);
+      localStorage['wtfridge_products'] = JSON.stringify(this.products);
     },
   },
+
+  mounted: function() {
+    const jsonProducts = localStorage['wtfridge_products'];
+    if (!jsonProducts) {
+      return;
+    }
+    this.products = JSON.parse(jsonProducts)
+      .map((p) => Object.assign(p, {
+        expireDate: new Date(p.expireDate)
+      }));
+  }
 };
 </script>
 

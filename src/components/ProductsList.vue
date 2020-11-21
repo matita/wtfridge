@@ -1,7 +1,8 @@
 <template>
-  <v-card>
+  <v-card v-if="products.length">
     <Product v-for="(product, i) in products" :key="i" :product="product" />
   </v-card>
+  <span v-else>Nessun prodotto</span>
 </template>
 
 <script>
