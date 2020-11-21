@@ -1,0 +1,1 @@
+.fade-enter-active{transition:opacity 1s,background-color 1s;background-color:#fff}.fade-leave-active{transition:opacity .4s}.fade-enter{opacity:0;background-color:#999}.fade-leave-to{opacity:0}video{width:100%}canvas{display:none}
