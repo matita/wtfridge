@@ -16,7 +16,10 @@
 
         <v-row>
           <v-col>
-            <ProductsList :products="sortedProducts" />
+            <ProductsList
+              :products="sortedProducts"
+              @delete="onDeleteProduct"
+            />
           </v-col>
         </v-row>
 
@@ -59,6 +62,10 @@ export default {
   },
 
   methods: {
+    saveList: function() {
+      localStorage['wtfridge_products'] = JSON.stringify(this.products);
+    },
+
     onAddClick: function() {
       this.adding = true;
     },
@@ -78,8 +85,18 @@ export default {
         product.id = this.nextId++;
       }
       this.products.push(product);
-      localStorage['wtfridge_products'] = JSON.stringify(this.products);
+      this.saveList();
     },
+
+    onDeleteProduct: function(product) {
+      const index = this.products.indexOf(product);
+      if (index < 0) {
+        return;
+      }
+
+      this.products.splice(index, 1);
+      this.saveList();
+    }
   },
 
   mounted: function() {
