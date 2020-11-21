@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" tile>
+  <v-card>
     <Product v-for="(product, i) in products" :key="i" :product="product" />
   </v-card>
 </template>

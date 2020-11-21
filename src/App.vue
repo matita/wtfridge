@@ -4,25 +4,30 @@
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
       <v-toolbar-title>WTFridge</v-toolbar-title>
-
-      <template v-slot:extension>
-        <v-btn fab bottom right absolute @click="scanning = !scanning">
-          <v-icon v-if="!scanning">mdi-barcode</v-icon>
-          <v-icon v-if="scanning">mdi-stop</v-icon>
-        </v-btn>
-      </template>
     </v-app-bar>
 
-    <v-main>
+    <v-main class="grey lighten-5">
       <v-container>
-        <scanner-list v-if="scanning"/>
-        <ProductsList :products="products" />
+        <v-row v-if="scanning">
+          <v-col>
+            <scanner-list/>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col>
+            <ProductsList :products="products" />
+          </v-col>
+        </v-row>
+
+        <AddMenu @add-click="onAddClick" @mic-click="onMicClick" @scan-click="onScanClick" />
       </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script>
+import AddMenu from './components/AddMenu.vue';
 import ProductsList from './components/ProductsList.vue';
 import ScannerList from './components/ScannerList.vue';
 
@@ -32,9 +37,11 @@ export default {
   components: {
     ProductsList,
     ScannerList,
+    AddMenu,
   },
 
   data: () => ({
+    fab: false,
     scanning: false,
     products: [
       {
@@ -49,5 +56,24 @@ export default {
       }
     ].sort((a,b) => a.expireDate.getTime() - b.expireDate.getTime())
   }),
+
+  methods: {
+    onAddClick: function() {
+      console.log('add click');
+    },
+
+    onMicClick: function() {
+      console.log('mic click');
+    },
+
+    onScanClick: function() {
+      console.log('scan click');
+      this.scanning = !this.scanning;
+    },
+  },
 };
 </script>
+
+<style scoped>
+
+</style>
