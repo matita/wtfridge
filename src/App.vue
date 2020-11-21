@@ -16,9 +16,11 @@
 
         <v-row>
           <v-col>
-            <ProductsList :products="products" />
+            <ProductsList :products="sortedProducts" />
           </v-col>
         </v-row>
+
+        <ProductDialog :visible="adding" @close="adding = false" @save="onSaveProduct" />
 
         <AddMenu @add-click="onAddClick" @mic-click="onMicClick" @scan-click="onScanClick" />
       </v-container>
@@ -30,6 +32,7 @@
 import AddMenu from './components/AddMenu.vue';
 import ProductsList from './components/ProductsList.vue';
 import ScannerList from './components/ScannerList.vue';
+import ProductDialog from './components/ProductDialog';
 
 export default {
   name: 'App',
@@ -38,11 +41,13 @@ export default {
     ProductsList,
     ScannerList,
     AddMenu,
+    ProductDialog,
   },
 
   data: () => ({
     fab: false,
     scanning: false,
+    adding: false,
     products: [
       {
         name: 'Latte',
@@ -54,12 +59,18 @@ export default {
         name: 'Salame',
         expireDate: new Date(2020, 10, 10)
       }
-    ].sort((a,b) => a.expireDate.getTime() - b.expireDate.getTime())
+    ]
   }),
+
+  computed: {
+    sortedProducts() {
+      return this.products.slice().sort((a,b) => a.expireDate.getTime() - b.expireDate.getTime());
+    }
+  },
 
   methods: {
     onAddClick: function() {
-      console.log('add click');
+      this.adding = true;
     },
 
     onMicClick: function() {
@@ -69,6 +80,11 @@ export default {
     onScanClick: function() {
       console.log('scan click');
       this.scanning = !this.scanning;
+    },
+
+    onSaveProduct: function(product) {
+      this.adding = false;
+      this.products.push(product);
     },
   },
 };
