@@ -59,16 +59,27 @@ export default {
 
     toggleListen: function() {
       if (this.listening) {
+        this.listening = false;
         recognition.stop();
       } else {
+        this.listening = true;
+        this.freeText = '';
+        recognition.onend = () => {
+          if (this.listening) {
+            this.freeText = '';
+            recognition.start();
+          }
+        };
         recognition.onresult = (event) => {
           this.interimText = '';
           for (let i = event.resultIndex; i < event.results.length; i++) {
             const result = event.results[i];
+            console.log('result', result);
+            const { transcript } = result[0];
             if (result.isFinal) {
-              this.freeText += result[0].transcript;
+              this.freeText += transcript;
             } else {
-              this.interimText += result[0].transcript;
+              this.interimText += transcript;
             }
           }
 
@@ -76,8 +87,6 @@ export default {
         };
         recognition.start();
       }
-
-      this.listening = !this.listening;
     }
   }
 }
