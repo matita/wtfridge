@@ -16,6 +16,12 @@
 
         <v-row>
           <v-col>
+            <FreeTextProduct />
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col>
             <ProductsList
               :products="sortedProducts"
               @delete="onDeleteProduct"
@@ -36,6 +42,7 @@ import AddMenu from './components/AddMenu.vue';
 import ProductsList from './components/ProductsList.vue';
 import ScannerList from './components/ScannerList.vue';
 import ProductDialog from './components/ProductDialog';
+import FreeTextProduct from './components/FreeTextProduct.vue';
 
 export default {
   name: 'App',
@@ -45,6 +52,7 @@ export default {
     ScannerList,
     AddMenu,
     ProductDialog,
+    FreeTextProduct,
   },
 
   data: () => ({
