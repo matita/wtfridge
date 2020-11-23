@@ -13,12 +13,6 @@
         <div>Scadenza: {{ dummy.expire || '---' }}</div>
       </v-col>
     </v-row>
-
-    <v-row v-if="logs.length">
-      <v-col>
-        <div v-for="(log, i) in logs" :key="i">{{ log }}</div>
-      </v-col>
-    </v-row>
   </div>
 </template>
 
@@ -42,7 +36,6 @@ export default {
       name: '',
       expire: '',
     },
-    logs: [],
   }),
 
   computed: {
@@ -78,20 +71,16 @@ export default {
           }
         };
         recognition.onresult = (event) => {
-          this.logs.push(`onresult start resultIndex: ${event.resultIndex}`);
           this.interimText = '';
           for (let i = event.resultIndex; i < event.results.length; i++) {
             const result = event.results[i];
             const { transcript } = result[0];
-            this.logs.push(`-- isFinal: ${result.isFinal}, transcript: '${transcript}'`);
-            console.log('result', result);
             if (result.isFinal) {
               this.freeText += transcript;
             } else {
               this.interimText += transcript;
             }
           }
-          this.logs.push('onresult end');
 
           this.onInput(this.freeText);
         };
